@@ -17,6 +17,10 @@ BLYNKIP = '188.166.206.43'
 
 BLYNKAUTH = ''
 
+
+
+
+#End of user configuration
 authenticity_token = ''
 lastwatchid = ''
 

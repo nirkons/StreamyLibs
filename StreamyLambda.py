@@ -222,7 +222,7 @@ def playintent(intent, session):
     
     session_attributes = target
     speech_output = "Playing"
-    reprompt_text = "You can say, play this file in my bedroom or play this music in my work room"
+    reprompt_text = ""
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session))
 

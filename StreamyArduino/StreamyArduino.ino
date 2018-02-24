@@ -39,16 +39,16 @@
 
 // You should get Auth Token in the Blynk App.
 // Go to the Project Settings (nut icon).
-char auth[] = "8f284db453644ea2be0ca5a18b220848";
+char auth[] = "";
 
 // Your WiFi credentials.
 // Set password to "" for open networks.
-char ssid[] = "elisha1";
-char pass[] = "elisha100";
+char ssid[] = "";
+char pass[] = "";
 
 //Define your device IPs, !!if you have less leave them as 0.0.0.0!!
-char livingroom[] = "10.0.0.12"; //ID 4
-char bedroom[] = "10.0.0.15"; //ID 5
+char livingroom[] = "0.0.0.0"; //ID 4
+char bedroom[] = "0.0.0.0"; //ID 5
 char computer[] = "0.0.0.0"; //ID 6
 
 String all = (String)livingroom + "." + bedroom + "." + computer;
@@ -70,7 +70,7 @@ ESP8266 wifi(&EspSerial);
 //Blynk writes here whenever a value is updated in the cloud
 BLYNK_WRITE(V3)
 {
-  uint8_t buffer[128] = {0};
+  uint8_t buffer[256] = {0};
 
   int pinValue = param.asInt(); // assigning incoming value from pin V3 to a variable
   
@@ -157,7 +157,7 @@ BLYNK_WRITE(V3)
   }
   else if (location == '5' && bedroom != "0.0.0.0")
   {
-          static uint8_t mux_id = 1;
+          static uint8_t mux_id = 0;
     if (wifi.createTCP(mux_id, bedroom, 13000)) {
         Serial.println("create tcp ");
         Serial.print(mux_id);
@@ -175,6 +175,7 @@ BLYNK_WRITE(V3)
           } else {
               Serial.println("send err");
           }
+          delay(1000);
           if (wifi.releaseTCP(mux_id)) {
             Serial.print("release tcp ");
             Serial.print(mux_id);
@@ -206,11 +207,12 @@ BLYNK_WRITE(V3)
     }
     else if (service == '3')
     {
-      if (wifi.send(mux_id, (const uint8_t*)"3-EOF-\n", 6)) {
+      if (wifi.send(mux_id, (const uint8_t*)"3-EOF-", 6)) {
               Serial.println("send ok");
           } else {
               Serial.println("send err");
           }
+
           if (wifi.releaseTCP(mux_id)) {
             Serial.print("release tcp ");
             Serial.print(mux_id);
@@ -227,7 +229,7 @@ BLYNK_WRITE(V3)
   }
   else if (location == '6' && computer != "0.0.0.0")
   {
-          static uint8_t mux_id = 2;
+          static uint8_t mux_id = 0;
     if (wifi.createTCP(mux_id, computer, 13000)) {
         Serial.println("create tcp ");
         Serial.print(mux_id);
@@ -322,11 +324,11 @@ void setup()
   // Debug console
   Serial.begin(9600);
 
-  delay(100);
+  delay(10);
 
   // Set ESP8266 baud rate
   EspSerial.begin(ESP8266_BAUD);
-  delay(100);
+  delay(10);
 
     if (wifi.joinAP(ssid, pass)) {
         Serial.print("Join AP success\r\n");
@@ -335,7 +337,7 @@ void setup()
     } else {
         Serial.print("Join AP failure\r\n");
     }
-
+ delay(10);
     if (wifi.enableMUX()) {
         Serial.print("mux enabled");
        Blynk.config(wifi, auth);
@@ -350,4 +352,3 @@ void loop()
 {
   Blynk.run();
 }
-

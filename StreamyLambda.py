@@ -13,7 +13,7 @@ PASSWORD = ""
     # PLEASE CHANGE THE IP of cloud-blynk.com to your region's IP as blynk-cloud's servers are not connected
     # Europe -> 139.59.206.133    US -> 45.55.96.146    Middle east -> 188.166.206.43
     # To make sure the IP is correct, open your CMD/Terminal and ping blynk-cloud.com to see which IP you get
-BLYNKIP = '188.166.206.43'
+BLYNKIP = '45.55.96.146'
 
 BLYNKAUTH = ''
 
@@ -223,6 +223,7 @@ def playintent(intent, session):
     session_attributes = target
     speech_output = "Playing"
     reprompt_text = None
+    should_end_session = True
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session))
 
